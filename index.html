@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FUN OWNER – USERS ADMIN</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,system-ui,Arial;
+  background:linear-gradient(180deg,#020617,#071426);
+  color:#e5e7eb;
+  padding:16px;
+}
+.wrap{max-width:600px;margin:auto}
+h1{font-size:20px;margin-bottom:6px}
+.small{font-size:13px;color:#94a3b8}
+
+.card{
+  background:#020617;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+  padding:14px;
+  margin-top:14px;
+}
+
+input,button{
+  font-family:inherit;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  background:transparent;
+  color:#fff;
+  width:100%;
+}
+
+.btn{
+  margin-top:10px;
+  background:linear-gradient(90deg,#34d399,#22d3ee);
+  color:#022c22;
+  border:0;
+  font-weight:700;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<h1>FUN OWNER – ADD USER</h1>
+<div class="small">(Only Add System · No Display)</div>
+
+<div class="card">
+  <input id="mobile" placeholder="Enter mobile number">
+  <button class="btn" id="addUser">ADD USER</button>
+</div>
+
+</div>
+
+<!-- Firebase config -->
+<script type="application/json" id="FIREBASE_CONFIG">
+{
+  "apiKey": "AIzaSyCKyMh58i2FM5dVc3FWvXPPjeAljmiXK54",
+  "authDomain": "bdtajloum.firebasestorage.app",
+  "databaseURL": "https://pythonv1-b5a8b-default-rtdb.firebaseio.com",
+  "projectId": "krsch-e6f64",
+  "storageBucket": "bdtajloum.firebasestorage.app",
+  "messagingSenderId": "216050966238",
+  "appId": "1:216050966238:android:b3441568eeba095f5d6c4f"
+}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
+const cfg = JSON.parse(document.getElementById("FIREBASE_CONFIG").textContent);
+const app = initializeApp(cfg);
+const db = getDatabase(app);
+
+const mobile = document.getElementById("mobile");
+const addBtn = document.getElementById("addUser");
+
+function now(){
+  return new Date().toLocaleString();
+}
+
+// ONLY ADD — NO READ, NO LIST, NO DELETE
+addBtn.onclick = async ()=>{
+  const m = mobile.value.trim();
+  if(!m){
+    alert("Enter mobile number");
+    return;
+  }
+
+  await set(ref(db,"dbRef/"+m),{
+    balance:"0",
+    brand:"Owner",
+    time:now()
+  });
+
+  mobile.value="";
+  alert("User added successfully");
+};
+</script>
+
+</body>
+</html>
